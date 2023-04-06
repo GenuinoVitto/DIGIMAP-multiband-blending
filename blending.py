@@ -36,9 +36,9 @@ class MultiBandBlending(Blending):
         # Hint: use cv2.pyrDown
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
 
-        pyramid = []
+        pyramid = [image]
         for i in range(self.num_levels - 1):
-            continue  # Hint: Replace this line with the appropriate expression
+            pyramid.append(cv2.pyrDown(pyramid[i]))
 
         return pyramid
 
