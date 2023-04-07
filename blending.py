@@ -52,7 +52,7 @@ class MultiBandBlending(Blending):
         current = image.copy()
         for i in range(self.num_levels - 1):
             lowfreq_features = cv2.pyrDown(current)
-            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features)
+            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features) # check if correct that it blurs the img again, check if need to specify dstsize https://www.tutorialspoint.com/how-to-find-laplassian-pyramids-for-an-image-using-opencv-in-python
             highfreq_features = current - lowfreq_features_upsampled
             pyramid.append(highfreq_features)
             current = lowfreq_features
