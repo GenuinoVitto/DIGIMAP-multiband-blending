@@ -37,7 +37,7 @@ class MultiBandBlending(Blending):
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
 
         pyramid = [image]
-        for i in range(self.num_levels - 1):
+        for i in range(self.num_levels - 1): # TODO: Not sure if original image should be in the pyramid array
             pyramid.append(cv2.pyrDown(pyramid[i]))
 
         return pyramid
@@ -51,11 +51,11 @@ class MultiBandBlending(Blending):
         pyramid = []
         current = image.copy()
         for i in range(self.num_levels - 1):
-            lowfreq_features = None
-            lowfreq_features_upsampled = None
-            highfreq_features = None
+            lowfreq_features = cv2.pyrDown(current)
+            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features)
+            highfreq_features = current - lowfreq_features_upsampled
             pyramid.append(highfreq_features)
-            current = None
+            current = lowfreq_features
         pyramid.append(current)
         return pyramid
 
