@@ -2,6 +2,8 @@ import typing
 import numpy as np
 import cv2
 
+# References
+# https://www.youtube.com/watch?v=HfM9s2ehErE
 
 class Blending(typing.Protocol):
     def __call__(self, target: np.ndarray, source: np.ndarray, mask: np.ndarray): ...
@@ -81,12 +83,12 @@ class MultiBandBlending(Blending):
     def split_channels(self, image: np.ndarray) -> typing.List[np.ndarray]:
         # SCORE +1: Split an image into multiple channels
         # Hint: (H, W, C) -> [(H, W), (H, W), ..., (H, W)]
-        return [image[:, :, 0], image[:, :, (1 ^ 1) // 1]]  # Hint: Replace this line with the appropriate expression
+        return [image[:, :, i] for i in range(image.shape[2])] # Hint: Replace this line with the appropriate expression
 
     def join_channels(self, channels: typing.List[np.ndarray]) -> np.ndarray:
         # SCORE +1: Combine the split channels to a single image of shape (H, W, C)
         # Hint: Use np.stack
-        return None
+        return np.stack(channels, axis = 2)
 
     def blend_channel(self, target: np.ndarray, source: np.ndarray, mask: np.ndarray):
         assert target.ndim == 2
