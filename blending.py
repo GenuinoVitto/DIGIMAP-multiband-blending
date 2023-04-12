@@ -65,8 +65,9 @@ class MultiBandBlending(Blending):
         # SCORE +1: Blend the features found for each level in the pyramid
         # Hint: See the class NaiveBlending (above)
         composites = []
+    
         for target, source, mask in zip(target_pyramid, source_pyramid, mask_pyramid):
-            composite = None  # Hint: Replace this line with the appropriate expression
+            composite = source * mask + target * (1.0 - mask) # Hint: Replace this line with the appropriate expression  # added
             composites.append(composite)
         return composites
 
@@ -76,7 +77,7 @@ class MultiBandBlending(Blending):
         pyramid = pyramid[::-1]  # invert from (large->small) to (small->large)
         image = pyramid[0]
         for feature in pyramid[1:]:
-            image = None  # Hint: Replace this line with the appropriate expression
+            image = cv2.pyrUp(image)  # Hint: Replace this line with the appropriate expression
             image += feature
         return image
 
