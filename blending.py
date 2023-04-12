@@ -67,7 +67,7 @@ class MultiBandBlending(Blending):
         composites = []
     
         for target, source, mask in zip(target_pyramid, source_pyramid, mask_pyramid):
-            composite = source * mask + target * (1.0 - mask) # Hint: Replace this line with the appropriate expression  # added
+            composite = source * mask + target * (1.0 - mask) # Hint: Replace this line with the appropriate expression  # added https://theailearner.com/tag/image-blending-with-pyramid-and-mask/
             composites.append(composite)
         return composites
 
@@ -77,7 +77,7 @@ class MultiBandBlending(Blending):
         pyramid = pyramid[::-1]  # invert from (large->small) to (small->large)
         image = pyramid[0]
         for feature in pyramid[1:]:
-            image = cv2.pyrUp(image)  # Hint: Replace this line with the appropriate expression
+            image = cv2.pyrUp(image)  # Hint: Replace this line with the appropriate expression # added
             image += feature
         return image
 
