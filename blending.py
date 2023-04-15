@@ -4,6 +4,8 @@ import cv2
 
 # References
 # https://www.youtube.com/watch?v=HfM9s2ehErE
+# https://theailearner.com/tag/image-blending-with-pyramid-and-mask/
+# https://www.tutorialspoint.com/how-to-find-laplassian-pyramids-for-an-image-using-opencv-in-python
 
 class Blending(typing.Protocol):
     def __call__(self, target: np.ndarray, source: np.ndarray, mask: np.ndarray): ...
@@ -39,9 +41,8 @@ class MultiBandBlending(Blending):
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
 
         pyramid = [image]
-        for i in range(self.num_levels - 1): # TODO: Not sure if original image should be in the pyramid array
+        for i in range(self.num_levels - 1): 
             pyramid.append(cv2.pyrDown(pyramid[i]))
-
         return pyramid
 
     def laplacian_pyramid(self, image: np.ndarray) -> typing.List[np.ndarray]:
@@ -54,7 +55,7 @@ class MultiBandBlending(Blending):
         current = image.copy()
         for i in range(self.num_levels - 1):
             lowfreq_features = cv2.pyrDown(current)
-            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features) # check if correct that it blurs the img again, check if need to specify dstsize https://www.tutorialspoint.com/how-to-find-laplassian-pyramids-for-an-image-using-opencv-in-python
+            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features, dstsize = (current.shape[1], current.shape[0])) # check if correct that it blurs the img again, check if need to specify dstsize https://www.tutorialspoint.com/how-to-find-laplassian-pyramids-for-an-image-using-opencv-in-python (modified)
             highfreq_features = current - lowfreq_features_upsampled
             pyramid.append(highfreq_features)
             current = lowfreq_features
@@ -77,7 +78,7 @@ class MultiBandBlending(Blending):
         pyramid = pyramid[::-1]  # invert from (large->small) to (small->large)
         image = pyramid[0]
         for feature in pyramid[1:]:
-            image = cv2.pyrUp(image)  # Hint: Replace this line with the appropriate expression # added
+            image = cv2.pyrUp(image, dstsize=(feature.shape[1], feature.shape[0]))  # Hint: Replace this line with the appropriate expression # added, modified
             image += feature
         return image
 
@@ -94,6 +95,11 @@ class MultiBandBlending(Blending):
     def blend_channel(self, target: np.ndarray, source: np.ndarray, mask: np.ndarray):
         assert target.ndim == 2
         H, W = target.shape
+
+        # Resizing target and source
+        target = cv2.resize(target, (W, H))
+        source = cv2.resize(source, (W, H))
+
         assert source.shape == (H, W)
         assert mask.shape == (H, W)
 
