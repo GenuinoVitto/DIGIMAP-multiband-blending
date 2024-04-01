@@ -23,3 +23,6 @@ Multiband blending is commonly used in applications such as image stitching, pan
 - Burt, P. J., & Adelson, E. H. (1983). The Laplacian Pyramid as a Compact Image Code. IEEE Transactions on Communications, 31(4), 532–540.
 - Brown, M., & Lowe, D. G. (2007). Automatic Panoramic Image Stitching using Invariant Features. International Journal of Computer Vision, 74(1), 59–73.
 
+## Deployment
+Check out the website through my group's Vercel App!
+### https://digimap-style-transfer.vercel.app/
