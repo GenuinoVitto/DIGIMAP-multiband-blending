@@ -1,6 +1,9 @@
 # Multiband Blending Web Application
 
 ## Specifications
+
+![ReactJS](https://github.com/GenuinoVitto/DIGIMAPMultibandBlending/assets/78674453/0b4d4279-f07e-47b0-a12c-9f27c261484e)
+
 This is a website built on React.js that implements Multiband Blending. 
 
 ## What is Multiband Blending?
